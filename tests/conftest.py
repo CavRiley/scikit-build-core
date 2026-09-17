@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import sysconfig
+import types
 import zipfile
 from collections.abc import Iterable
 from importlib import metadata
@@ -439,6 +440,20 @@ def protect_get_requires(fp, monkeypatch):
         return orig_find_spec(name, package)
 
     monkeypatch.setattr(importlib.util, "find_spec", find_spec)
+
+
+@pytest.fixture
+def variant_python(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    Report 3.10 (the variantlib minimum) so tests that enable variant settings still run on Python 3.9.
+    """
+    import scikit_build_core._variants
+
+    monkeypatch.setattr(
+        scikit_build_core._variants,
+        "sys",
+        types.SimpleNamespace(version_info=(3, 10)),
+    )
 
 
 @pytest.fixture(autouse=True)

@@ -267,6 +267,7 @@ def test_skbuild_settings_cmake_build_type_explicit_wins(
     assert settings_reader.settings.cmake.build_type == "Debug"
 
 
+@pytest.mark.usefixtures("variant_python")
 def test_skbuild_settings_envvar(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(
         scikit_build_core.settings.skbuild_read_settings, "__version__", "0.12.0"
@@ -371,6 +372,7 @@ def test_skbuild_settings_envvar(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     assert settings.messages.after_success == "This is a test success message"
 
 
+@pytest.mark.usefixtures("variant_python")
 @pytest.mark.parametrize("prefix", [True, False], ids=["skbuild", "noprefix"])
 def test_skbuild_settings_config_settings(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, prefix: bool
